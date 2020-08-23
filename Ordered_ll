@@ -5,9 +5,8 @@ using namespace std;
 class OLL
 {
 public:
-class node
+struct node
 {
-public:
 int data;
 node *next;
 } *first,*last,*temp,*temp1;
@@ -80,7 +79,7 @@ void OLL::deleteNode(int n)
 void OLL::display()
 {
 	temp=first;
-	cout<<"\n LINKED LIST : ";
+	
 	while(temp!=NULL)
 	{
 		cout<<" "<<temp->data;
@@ -96,6 +95,7 @@ void OLL::merge(OLL ob)
 		insert(ob.temp->data);
 		ob.temp=ob.temp->next;
 	}	
+    display();
 }
 
 int main()
@@ -121,7 +121,7 @@ int main()
 				ob1.deleteNode(n);
 				break;
 			case 3:
-			    cout<<"\n Enter the no. of nodes in the second list";
+			    cout<<"\n Enter the no. of nodes in the second list ";
 				cin>>n;
 				while(n>0)
 				{
