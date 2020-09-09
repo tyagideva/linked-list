@@ -1,0 +1,149 @@
+#include <iostream>
+#include <stdio.h>
+using namespace std;
+
+
+class Stack
+{
+
+public:
+struct node
+{
+    int data;
+    node* next;
+
+}*top,*temp;
+
+    Stack()
+    {
+        top = NULL;
+    }
+    void dequeue(Stack s, Stack s1);
+    void push(int a);
+     int pop();
+    void Clear();
+    bool isempty();
+    void display();
+
+
+};
+bool Stack :: isempty()
+{
+    if( top == NULL)
+        return true;
+    else
+    return false;
+}
+void Stack :: push(int val)
+{
+
+
+    temp = new node;
+    temp->data = val;
+    temp->next = NULL;
+    if(isempty())
+    {
+        top = temp;
+        cout<<"1st";
+    }
+    else
+    {
+        temp->next = top;
+        top = temp;
+
+
+    }
+    return;
+}
+int Stack :: pop()
+{int x;
+ if(isempty())
+ {
+     cout<<"\n list is empty;";
+
+ }
+ else
+ {
+     x  = top->data;
+     temp = top;
+     top = top->next;
+     delete temp;
+     return x;
+ }
+}
+void Stack :: Clear()
+{   node* temp1;
+    temp = top;
+    while(temp != NULL)
+    {
+        cout<<temp->data<<"deleted"<<endl;
+        temp1 = temp->next;
+        delete temp;
+        temp = temp1;
+
+    }
+    top = NULL;
+
+}
+void Stack :: display()
+{
+    temp = top;
+    while(temp != NULL)
+    {
+        cout<<temp->data;
+        temp = temp->next;
+
+    }
+}
+void Stack:: dequeue(Stack s, Stack s1)
+{
+            int q;
+        while(!s.isempty())
+        {
+            q = s.pop();
+            s1.push(q);
+
+
+        }
+        s1.pop();
+        while(!s1.isempty())
+        {
+            q = s1.pop();
+            s.push(q);
+        }
+}
+
+int main()
+{
+    Stack s, s1;
+    int ch;
+
+    while(1)
+    {
+     cout<<"\n enter your choice";
+    cin>>ch;
+
+
+
+    switch(ch)
+    {
+    case 1:
+         int val;
+    cout<<"\n enter the no. ";
+    cin>>val;
+        s.push(val);
+        break;
+    
+    case 2:
+        s.display();
+        break;
+    case 3:
+         s.dequeue(s,s1);
+    default:
+        cout<<"\n wrong choice";
+    }
+    }
+
+    return 0;
+}
+
