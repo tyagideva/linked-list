@@ -29,7 +29,7 @@ class queue
      }
      bool isempty()
      {
-         if(first = -1)
+         if(first == -1)
             return true;
      }
     void Clear()
