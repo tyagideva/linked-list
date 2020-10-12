@@ -1,7 +1,7 @@
 #include <iostream>
 #include<stdio.h>
 using namespace std;
-
+const int size = 10;
 class node
 {
 public:
@@ -10,6 +10,63 @@ public:
     node *right;
 
 };
+class queue
+{
+    node *a[size],*n;
+    int front , last;
+public:
+    queue()
+    {
+        front = last = -1;
+    }
+    void  enqueue(node *);
+    node * dequeue();
+    int isfull();
+    int isempty();
+
+};
+int queue ::isempty()
+{
+    return (front==-1&&last==-1);}
+
+int queue  :: isfull()
+{
+    //if((front == 0 && last = size-1) || (front = last+1) )
+      //  return 1;
+    //else
+      //  return 0;
+      return((front==0&&last==size-1)||front==last+1);
+}
+void queue :: enqueue(node *t)
+{
+    if(isfull())
+	{ cout<<"\n\tCannot Insert";}
+  else if(last==-1)
+	  {  front=last=0;}
+  else if(last==size-1&&front>0)
+	  { last=0;}
+  else
+	  { last++;}
+		 a[last]=t;
+
+}
+node * queue :: dequeue()
+{
+    if(isempty())
+		 {cout<<"\n\tCannot delete";
+		  n=0;}
+  else
+		{ n=a[front];
+		  if(front==last)
+			  {front=last=-1;}
+		  else if(front==size-1)
+				  {	front=0;  }
+		  else
+				 {front++;}
+		}
+  return n;
+}
+
 class stack
 {
     node *a[10],*n;
@@ -98,6 +155,12 @@ public:
 void leaf_nonleaf(node *t);
 void ite_preorder(node *t);
 void ite_postorder(node *t);
+void ite_inorder(node *t);
+void bsf_traversal(node *t);
+void dcopy(node *& t);
+void dmerg(node *& t);
+void delcopy(node *t,int el);
+void delmerg(node *t,int el);
 int max(int a, int b)
 {
     if(a>b)
@@ -199,14 +262,41 @@ void BST:: ite_preorder(node *t)
              cout<<" "<<t->data;
              if(t->right!= NULL)
              s1.push(t->right);
-             
              if(t->left!= NULL)
-             
              s1.push(t->left);
 
         }}
 
 
+        }
+        void BST :: ite_inorder(node *t)
+        {stack s1;
+            while(t!= NULL)
+            {
+                while(t != NULL)
+                {
+                    if(t->right !=NULL)
+                    {
+                        s1.push(t->right);
+                    }
+                    s1.push(t);
+                    t = t->left;
+
+                }
+                t = s1.pop();
+                while(!s1.isempty() && t->right == NULL)
+                {
+                    cout<<" "<<t->data;
+                    t = s1.pop();
+                }
+                cout<<" "<<t->data;
+                if(!s1.isempty())
+                {
+                    t = s1.pop();
+                }
+                else
+                    t = NULL;
+            }
         }
         void BST :: ite_postorder(node *t)
        {
@@ -279,6 +369,23 @@ void BST :: search(int ele)
         cout<<"NOt Fount";
         cout<<endl;
 }}
+void BST :: bsf_traversal(node *temp)
+{queue q1;
+	if(temp!=0)
+	 {
+		 q1.enqueue(temp);
+		 while(!q1.isempty())
+		  {
+			 temp=q1.dequeue();
+
+			 cout<<" "<<temp->data;
+			 if(temp->left!=0)
+				{q1.enqueue(temp->left);}
+			 if(temp->right!=0)
+				 {q1.enqueue(temp->right);}
+		  }
+	 }
+}
 void BST :: leaf_nonleaf(node * t)
 {
 
@@ -294,6 +401,130 @@ void BST :: leaf_nonleaf(node * t)
     leaf_nonleaf(t->right);
     }
 }
+void BST :: delcopy(node *t,int el)
+{node* prev = NULL;
+    while(t!= NULL)
+    {
+        if(t->data == el)
+            break;
+        prev = t;
+        if( t->data < el)
+
+
+
+            t = t->right;
+
+        else
+
+
+
+            t = t->left;
+
+    }
+        if(t!= NULL && t->data == el )
+        {
+            if(t == root)
+                dcopy(root);
+            else if(prev->left == t)
+            dcopy(prev->left);
+            else
+                dcopy(prev->right);
+
+        }
+        else if(root!=0)
+	  cout<<"\n\tKEY "<<el<<" IS NOT IN TREE";
+	else
+		cout<<"\n\tTREE IS EMPTY";
+    }
+
+
+void BST :: dcopy(node *& temp)
+{node *prev,*tmp = temp;
+    if(temp->left == NULL)
+        temp = temp->right;
+    else if(temp->right == NULL)
+        temp = temp->left;
+        else
+        {tmp = temp->left;
+        prev = temp;
+
+            while(tmp->right !=NULL)
+            {
+                prev = tmp;
+                tmp = tmp->right;
+            }
+
+            temp->data = tmp->data;
+            if(prev == temp)
+                prev->left = tmp->left;
+            else
+                prev->right = tmp->left;
+
+
+        }
+            delete tmp;
+
+}
+void BST :: delmerg(node *t,int el)
+{node* prev = NULL;
+    while(t!= NULL)
+    {
+        if(t->data == el)
+            break;
+        prev = t;
+        if( t->data < el)
+
+
+
+            t = t->right;
+
+        else
+
+
+
+            t = t->left;
+
+    }
+        if(t!= NULL && t->data == el )
+        {
+            if(t == root)
+                dmerg(root);
+            else if(prev->left == t)
+            dmerg(prev->left);
+            else
+                dmerg(prev->right);
+
+        }
+        else if(root!=0)
+	  cout<<"\n\tKEY "<<el<<" IS NOT IN TREE";
+	else
+		cout<<"\n\tTREE IS EMPTY";
+    }
+    void BST :: dmerg(node *& temp)
+{node *tmp = temp;
+    if(temp->left == NULL)
+        temp = temp->right;
+    else if(temp->right == NULL)
+        temp = temp->left;
+        else
+        {tmp = temp->left;
+
+
+            while(tmp->right !=NULL)
+            {
+
+                tmp = tmp->right;
+            }
+
+            tmp->right = temp->right;
+            tmp = temp;
+            temp = temp->left;
+
+        }
+            delete tmp;
+
+}
+
 
 int BST :: height(node *t)
 {int lh,rh = 0;
@@ -304,21 +535,25 @@ int BST :: height(node *t)
     return 1+max(lh,rh);
 }
 
+
 int main()
 {
     BST ob;
-    int ch,n,e;
+    int ch,n,e,al;
     do
     {
         cout<<"---------MAIN MENU--------";
         cout<<"\n 1 Insertion";
-        cout<<"\n 2 postorder,inorder, preorder";
-        cout<<"\n 3 to search for an element";
-        cout<<"\n 4 to find no. of leaf and non leaf";
-        cout<<"\n 5 to find the height of the tree";
-        cout<<"\n 6 to find preorder traversal iterative";
-        cout<<"\n 7 to find postorder traversal iterative";
-        cout<<"\n 8 to find inorder traversal iterative";
+        cout<<"\n 2 recureive postorder,inorder, preorder";
+        cout<<"\n 3 to search an element";
+        cout<<"\n 4 to find leaf and non leaf";
+        cout<<"\n 5 to find tree height";
+        cout<<"\n 6 to find iterative preorder";
+        cout<<"\n 7 to find iterative postorder";
+        cout<<"\n 8 to find iterative inorder";
+        cout<<"\n 9 to find bdf traversal";
+        cout<<"\n 10 to do deletion by copying";
+        cout<<"\n 11 to  do deletion by merging";
         cin>>ch;
     switch(ch)
     {
@@ -352,13 +587,29 @@ int main()
         cout<<"\n height is";
         h = ob.height(ob.root);
         cout<<h;
+        break;
     case 6:
         ob.ite_preorder(ob.root);
-
+break;
     case 7:
         ob.ite_postorder(ob.root);
+    break;
     case 8:
         ob.ite_inorder(ob.root);
+        break;
+        case 9:
+        ob.bsf_traversal(ob.root);
+        break;
+        case 10:
+            cout<<"enter the ele. to delete";
+            cin>>al;
+            ob.delcopy(ob.root,al);
+            break;
+        case 11:
+            cout<<"enter the ele. to delete";
+            cin>>al;
+
+            ob.delmerg(ob.root,al);
     }
 
     }while(ch!= 0);
