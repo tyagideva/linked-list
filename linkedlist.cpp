@@ -24,7 +24,7 @@ public:
     void del_big();
     void display();
     void insert_end();
-    void Insert_bet(int data, int n);
+    void Insert_bet(int data);
     void delet_last();
     void insert_at_beg();
 };
@@ -53,8 +53,11 @@ void List::create()
 }while(ch == 'y');
 }
 
-void List:: Insert_bet(int data, int n)
+void List:: Insert_bet(int data)
 {
+    int n;
+    cout<<"\n enter the position where you want to insert";
+    cin>>n;
    temp = new node;
    temp->data = data;
    temp->next = NULL;
@@ -66,6 +69,7 @@ void List:: Insert_bet(int data, int n)
    node* temp2 ;
    temp2 = first;
    for (int i = 0; i < n-2; i++){// i feel like it doesn't even go through this loop
+
      temp2 = temp2->next;
    }
    temp->next = temp2->next;
@@ -179,14 +183,22 @@ int main()
             break;
         case 4:
             l.insert_at_beg();
+            break;
         case 5:
-            l.Insert_bet(0,3);
+            l.Insert_bet(10);
+            break;
         case 6:
             l.del_big();
+            break;
+
         case 7:
+
             l.delet_bet(3);
+        break;
         case 8:
-            l.delet_last();
+
+        l.delet_last();
+        break;
         }
     }
     return 0;
